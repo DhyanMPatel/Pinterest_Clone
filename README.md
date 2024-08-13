@@ -40,15 +40,15 @@ Now Here i provide all Steps i do in This Post.
 4. provide own id to each other Collection in Schema inside routes
 
     1. posts.js
-    
-        -> user:{
+
+        user:{
             type: mongoose.Schema.Type.ObjectId,
             ref: 'User'
         }
 
     2. user.js
 
-        -> posts:[{
+        posts:[{
             type:mongoose.Schema.Type.ObjectId,
             ref: "Post"
         }]
