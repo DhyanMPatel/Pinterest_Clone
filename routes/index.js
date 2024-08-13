@@ -19,6 +19,7 @@ router.get('/createuser', async function (req, res) {
   res.send(createdUser)
 })
 
+
 router.get('/createpost', async function (req, res) {
   let createdPost = await postModel.create({
     postText: "This is Post Text Description.",
@@ -29,6 +30,12 @@ router.get('/createpost', async function (req, res) {
   user.posts.push(createdPost._id);      /// push post id to user's post Array
   await user.save();    /// save user with updated post array
   res.send('Done');
+})
+
+router.get('/alluserposts',async function(req,res){
+  let user = await userModel.findOne({_id:"66bbaa40a7c519ca2b419887"})  // alone this line provide Id of post
+  .populate("posts")      /// .populate("Attribute Name") provide all data instead of providing only Post Id 
+  res.send(user);
 })
 
 module.exports = router;
