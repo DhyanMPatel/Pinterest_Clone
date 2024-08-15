@@ -79,6 +79,21 @@ Now Here i provide all Steps i do in This Post.
 
         npm i passport passport-local passport-local-mongoose mongoose express-session
 
+    -> create Session
+
+        app.use(session({
+            resave:false,
+            saveUninitialized:false,
+            secret:"created Session"
+        }))
+
+    -> Authentication & Authorization
+
+        app.use(passport.initialize());
+        app.use(passport.session());
+        passport.serializeUser(usersRouter.serializeUser());
+        passport.deserializeUser(usersRouter.deserializeUser());
+
 Now Start the Project
 
 1. /Login and /SignUp route
@@ -88,4 +103,4 @@ Now Start the Project
 5. /board/:boradname whole board Name can see
 
 
-    now search "how many models are requiered for Pinterest Clone"
+Now search "how many models are requiered for Pinterest Clone"

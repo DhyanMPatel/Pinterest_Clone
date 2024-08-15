@@ -2,42 +2,50 @@ var express = require('express');
 var router = express.Router();
 const userModel = require('./users');
 const postModel = require('./posts');
+const passport = require("passport");
+
+/// throuh this line user can login
+const localStrategy = require("passoprt-local")
+passport.authenticate(new localStrategy(userModel.authenticate()));
 
 /* GET home page. */
 router.get('/', function (req, res, next) {
   res.render('index', { title: 'Express' });
 });
 
-router.get('/createuser', async function (req, res) {
-  let createdUser = await userModel.create({
-    username: "Dhyan",
-    password: "Dhyan1234",
-    posts: [],
-    email: "dhyan@test.com",
-    fullName: "Dhyan M Patel",
+router.get('/profile', isLoggedIn, function (req, res) {
+  res.send("Profile page");
+})
+
+router.post('/register', function (req, res) {
+  const { username, email, fullname } = req.body;
+  const userData = new userModel({ username, email, fullname });
+
+  userModel.register(userData, req, body.password)   /// simplify user registration
+    .then(function () {
+      passport.authenticate("local")/* now middleware comes -> */(req, res, function () {
+        res.redirect("/profile");
+      })
+    })
+})
+
+router.post("/login", passport.authenticate("local", {
+  successRedirect: "/profile",
+  failureRedirect: '/'
+}), function (req, res) {
+
+})
+
+router.get("/logout", function (req, res) {
+  req.logout(function (error) {
+    if (error) { return next(error) }
+    res.redirect('/');
   })
-  res.send(createdUser)
 })
 
-
-router.get('/createpost', async function (req, res) {
-  let createdPost = await postModel.create({
-    postText: "This is Post Text Description.",
-    user:"66bbaa40a7c519ca2b419887"
-  })
-  // res.send(createPost);
-  let user = await userModel.findOne({_id:"66bbaa40a7c519ca2b419887"});  /// contain user, That posted content
-  user.posts.push(createdPost._id);      /// push post id to user's post Array
-  await user.save();    /// save user with updated post array
-  res.send('Done');
-})
-
-router.get('/alluserposts',async function(req,res){
-  let user = await userModel.findOne({_id:"66bbaa40a7c519ca2b419887"})  // alone this line provide Id of post
-  
-  /// This tells Mongoose to replace `userId` with the actual User document
-  .populate("posts")      /// .populate("Attribute Name") provide all data instead of providing only Post Id 
-  res.send(user); 
-})
+function isLoggedIn(req, res, next) {
+  if (req.isAuthenticated()) return next();
+  res.redirect('/')
+}
 
 module.exports = router;

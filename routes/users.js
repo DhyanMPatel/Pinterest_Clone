@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const plm = require('passport-local-mongoose');
 
 mongoose.connect("mongodb://127.0.0.1:27017/pinterest");  
 
@@ -29,7 +30,7 @@ const userSchema = new mongoose.Schema({
         trim: true,
         lowercase: true,
     },
-    fullName: {
+    fullname: {
         type: String,
         required: true,
         trim: true,
@@ -37,6 +38,8 @@ const userSchema = new mongoose.Schema({
 }, {
     timestamps: true, // Automatically add createdAt and updatedAt fields
 });
+
+userSchema.plugin(plm);
 
 // Create and export the User model
 const User = mongoose.model('User', userSchema);
