@@ -66,4 +66,26 @@ Now Here i provide all Steps i do in This Post.
             user.posts.push(createpost._id);
             await user.save();
             res.json(user);
+    
+    3. get "/alluserposts"
+        ->use to find perticular user's posts also when we try to display all details of user that time we can't see posts details only postid can see there for we should use .populate("Field name of userModel which we wont document. ")
 
+            let user = await userModel.findOne({_id:"66bbaa40a7c519ca2b419887"})
+            .populate("posts")
+            res.send(user);
+
+
+6. install passport passport-local passport-local-mongoose mongoose express-session
+
+        npm i passport passport-local passport-local-mongoose mongoose express-session
+
+Now Start the Project
+
+1. /Login and /SignUp route
+2. can see profile details on your /profile, can see saved photos, also can have a "Uploaded Section" 
+3. /feed can see all images.
+4. also can open images and save that images.
+5. /board/:boradname whole board Name can see
+
+
+    now search "how many models are requiered for Pinterest Clone"

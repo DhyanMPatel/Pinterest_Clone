@@ -34,8 +34,10 @@ router.get('/createpost', async function (req, res) {
 
 router.get('/alluserposts',async function(req,res){
   let user = await userModel.findOne({_id:"66bbaa40a7c519ca2b419887"})  // alone this line provide Id of post
+  
+  /// This tells Mongoose to replace `userId` with the actual User document
   .populate("posts")      /// .populate("Attribute Name") provide all data instead of providing only Post Id 
-  res.send(user);
+  res.send(user); 
 })
 
 module.exports = router;
