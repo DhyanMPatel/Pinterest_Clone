@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
-const plm = require('passport-local-mongoose');
+const plm = require('passport-local-mongoose');     /// use for Authentication using passpost.js middleware
 
-mongoose.connect("mongodb://127.0.0.1:27017/pinterest");  
+mongoose.connect("mongodb://127.0.0.1:27017/pinterest");
 
 // Define the User schema
 const userSchema = new mongoose.Schema({
@@ -16,8 +16,7 @@ const userSchema = new mongoose.Schema({
         default: '',  // Default value if no dp is provided
     },
     password: {
-        type: String,
-        required: true,
+        type: String
     },
     posts: [{
         type: mongoose.Schema.Types.ObjectId,
@@ -35,12 +34,11 @@ const userSchema = new mongoose.Schema({
         required: true,
         trim: true,
     },
-}, {
-    timestamps: true, // Automatically add createdAt and updatedAt fields
+    // }, {
+    //     timestamps: true, // Automatically add createdAt and updatedAt fields
 });
 
-userSchema.plugin(plm);
+userSchema.plugin(plm);     /// useto add Passport.js functionality to the User model.
 
 // Create and export the User model
-const User = mongoose.model('User', userSchema);
-module.exports = User;
+module.exports = mongoose.model('User', userSchema);

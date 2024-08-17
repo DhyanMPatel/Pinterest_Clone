@@ -4,9 +4,13 @@ const userModel = require('./users');
 const postModel = require('./posts');
 const passport = require("passport");
 
-/// throuh this line user can login
-const localStrategy = require("passoprt-local")
-passport.authenticate(new localStrategy(userModel.authenticate()));
+// Add these lines before your routes
+router.use(express.json()); // to parse JSON bodies
+router.use(express.urlencoded({ extended: true }));  // to parse URL-encoded bodies
+
+/// through this line user can login
+const localStrategy = require("passport-local")
+passport.use(new localStrategy(userModel.authenticate()));
 
 /* GET home page. */
 router.get('/', function (req, res, next) {
@@ -21,7 +25,7 @@ router.post('/register', function (req, res) {
   const { username, email, fullname } = req.body;
   const userData = new userModel({ username, email, fullname });
 
-  userModel.register(userData, req, body.password)   /// simplify user registration
+  userModel.register(userData, req.body.password)   /// simplify user registration
     .then(function () {
       passport.authenticate("local")/* now middleware comes -> */(req, res, function () {
         res.redirect("/profile");

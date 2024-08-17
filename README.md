@@ -95,12 +95,48 @@ Now Here i provide all Steps i do in This Post.
         passport.deserializeUser(usersRouter.deserializeUser());
 
 Now Start the Project
-
-1. /Login and /SignUp route
-2. can see profile details on your /profile, can see saved photos, also can have a "Uploaded Section" 
-3. /feed can see all images.
-4. also can open images and save that images.
-5. /board/:boradname whole board Name can see
-
+    1. /Login and /SignUp route
+    2. can see profile details on your /profile, can see saved photos, also can have a "Uploaded Section" 
+    3. /feed can see all images.
+    4. also can open images and save that images.
+    5. /board/:boradname whole board Name can see
 
 Now search "how many models are requiered for Pinterest Clone"
+
+7. Register API
+    ->During Register Page we need username, email, fullname from body.
+
+        const { username, email, fullname } = req.body;
+        const userData = new userModel({ username, email, fullname });
+
+    -> Need to register Authentication we use passport.authenticate()
+    
+        userModel.register(userData, req.body.password)   
+        .then(function () {
+            passport.authenticate("local")(req, res, function () {
+                res.redirect("/profile");
+            })
+        })
+
+8. Login API
+    ->here we use meddleware passport.authenticate()
+
+        passport.authenticate("local",{
+            successRedirect: "/profile",
+            failureRedirect: "/",
+        })
+
+9. Logout API
+    ->here we use req.logout()
+
+        req.logout(function (err){
+            if(err) next(err)
+            res.redirect('/');
+        })
+
+10. create a middleware and use at /profile
+
+        function isLoggedIn(req,res,next){
+            if(req.isAuthenticated()) return next();
+            res.redirect('/')
+        }
