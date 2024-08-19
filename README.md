@@ -140,3 +140,7 @@ Now search "how many models are requiered for Pinterest Clone"
             if(req.isAuthenticated()) return next();
             res.redirect('/')
         }
+
+11. index.ejs => Created Register UI like pinterest login UI
+12. login.ejs => Created Login UI like pinterest Login UI
+13. 

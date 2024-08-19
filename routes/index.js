@@ -14,11 +14,19 @@ passport.use(new localStrategy(userModel.authenticate()));
 
 /* GET home page. */
 router.get('/', function (req, res, next) {
-  res.render('index', { title: 'Express' });
+  res.render('index');
 });
 
+router.get('/login',function(req,res,next){
+  res.render('login')
+})
+
+router.get('/feed', isLoggedIn,function(req,res,next){
+  res.render('feed')
+})
+
 router.get('/profile', isLoggedIn, function (req, res) {
-  res.send("Profile page");
+  res.render('profile')
 })
 
 router.post('/register', function (req, res) {
@@ -35,7 +43,7 @@ router.post('/register', function (req, res) {
 
 router.post("/login", passport.authenticate("local", {
   successRedirect: "/profile",
-  failureRedirect: '/'
+  failureRedirect: '/login'
 }), function (req, res) {
 
 })
@@ -49,7 +57,8 @@ router.get("/logout", function (req, res) {
 
 function isLoggedIn(req, res, next) {
   if (req.isAuthenticated()) return next();
-  res.redirect('/')
+  res.redirect('/login')
 }
+
 
 module.exports = router;
