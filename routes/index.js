@@ -17,11 +17,12 @@ router.get('/', function (req, res, next) {
   res.render('index');
 });
 
-router.get('/login',function(req,res,next){
-  res.render('login')
+router.get('/login', function (req, res, next) {
+  // console.log(req.flash("error"))         // this will print flash value when failureFlash becomes true
+  res.render('login', { error: req.flash("error") })
 })
 
-router.get('/feed', isLoggedIn,function(req,res,next){
+router.get('/feed', isLoggedIn, function (req, res, next) {
   res.render('feed')
 })
 
@@ -43,7 +44,8 @@ router.post('/register', function (req, res) {
 
 router.post("/login", passport.authenticate("local", {
   successRedirect: "/profile",
-  failureRedirect: '/login'
+  failureRedirect: '/login',
+  failureFlash: true,       /// this will return array in console.
 }), function (req, res) {
 
 })

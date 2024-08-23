@@ -141,6 +141,40 @@ Now search "how many models are requiered for Pinterest Clone"
             res.redirect('/')
         }
 
-11. index.ejs => Created Register UI like pinterest login UI
+11. index.ejs => Created Register UI like pinterest UI
 12. login.ejs => Created Login UI like pinterest Login UI
-13. 
+13. new need to show flash messages using connect-flash package
+    -> import connect-flash package
+    
+        npm i connect-flash
+
+    -> To display flash messages we just add one line to "/login" API after failureRedirect:"/login". in index.js routes
+
+        failureFlash: true
+
+    -> Then go to app.js file and write one line of code before app.use(session()),
+
+        const flash = require("connect-flash");
+        app.use(flash);
+
+            - This indicates flash meassages are new Active.
+
+    -> /login router contain,
+
+        console.log(req.flash("error"));
+
+            - This error is a just like sql command it shows error which is "Password or username is incorrect".
+    
+    -> new we impliment flash()
+
+        res.render("login", {error:req.flash("error")})
+
+            - pass error to login.ejs file
+
+        <% if(error.length>0) {%>
+            <p class="error">
+                <%= error %>
+            </p>
+        <% } %>
+
+            - this is use to display error inside login form

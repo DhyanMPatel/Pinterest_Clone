@@ -154,3 +154,10 @@ hr {
   border-radius: 20px;
 
 }
+
+.error{
+  color:red;
+  font-weight: 500;
+  text-transform: capitalize;
+  margin: 7px 0;
+}
