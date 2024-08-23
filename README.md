@@ -178,3 +178,19 @@ Now search "how many models are requiered for Pinterest Clone"
         <% } %>
 
             - this is use to display error inside login form
+
+14. Make Dynamic profile name and username
+
+    -> we want to pass user details from userModel to .ejs file in "/profile" API
+
+        router.get("/profile", isLoggedIn, async function(req,res){
+            const user = await userModel.findOne({
+                username: req.session.passport.user
+            })
+            res.render("profile",{user})
+        })
+
+    -> In profile.ejs file contain user details
+
+        - To name write <%= user.fullname %>
+        - To username write <%= user.username %>    

@@ -26,8 +26,12 @@ router.get('/feed', isLoggedIn, function (req, res, next) {
   res.render('feed')
 })
 
-router.get('/profile', isLoggedIn, function (req, res) {
-  res.render('profile')
+router.get('/profile', isLoggedIn, async function (req, res) {
+  const user = await userModel.findOne({
+    username: req.session.passport.user
+  })
+  console.log(user);
+  res.render('profile',{user})
 })
 
 router.post('/register', function (req, res) {
