@@ -193,4 +193,48 @@ Now search "how many models are requiered for Pinterest Clone"
     -> In profile.ejs file contain user details
 
         - To name write <%= user.fullname %>
-        - To username write <%= user.username %>    
+        - To username write <%= user.username %>  
+
+
+Now we try to make posts
+    -multer : can upload images
+    -uuid : provide unic name to any post. When we try to download any post that time give random(Unic) name to that file
+
+    steps:
+    1. Installation
+
+        npm i uuid multer
+
+    2. Create form in profile.ejs file
+
+        <form action="/upload" method="Post" enctype="multipart/form-data">
+            <input type="file" name="file">
+            <button type="submit">Upload</button>
+        </form>
+    
+    3. make multer.js file : this file manage all post storage destination and filename like things
+
+        const multer = require("multer");
+        const {v4: uuidv4} = require("uuid");
+        const path = require("path")
+
+        const storage = multer.diskStorage({
+            destination: function (req,file,cb){
+                cb(null, "./public/images/uploads")
+            },
+            filename:function(req,file,cb){
+                const filename = uuidv4();
+                cb(null, filename + path.extname(file.originalname));
+            }
+        })
+
+    4. Atlast index.js file should have API : this file should be post method and /upload url
+
+        router.post("/upload", upload.single("file"),function(req,res){
+            if(!req.file){
+                res.status(404).send("No File were Uploaded.")
+            }
+            res.send("File Succesfully Uploaded.")
+        })
+
+    

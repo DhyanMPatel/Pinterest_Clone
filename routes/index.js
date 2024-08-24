@@ -3,6 +3,7 @@ var router = express.Router();
 const userModel = require('./users');
 const postModel = require('./posts');
 const passport = require("passport");
+const upload = require("./multer")
 
 // Add these lines before your routes
 router.use(express.json()); // to parse JSON bodies
@@ -24,6 +25,14 @@ router.get('/login', function (req, res, next) {
 
 router.get('/feed', isLoggedIn, function (req, res, next) {
   res.render('feed')
+})
+
+/// form action
+router.post('/upload', upload.single("file"), (req,res)=>{
+  if(!req.file){
+    return res.status(404).send("No File Were uploaded.")
+  }
+  res.send("File uploaded Succesfully.")
 })
 
 router.get('/profile', isLoggedIn, async function (req, res) {
