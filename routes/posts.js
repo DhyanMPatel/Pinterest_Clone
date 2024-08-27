@@ -4,10 +4,13 @@ mongoose.connect('mongodb://127.0.0.1:27017/pinterest')
 
 // Define the Post schema
 const postSchema = new mongoose.Schema({
-    postText: {
+    imageText: {
         type: String,
         required: true,
         trim: true,
+    },
+    image:{
+        type:String,        /// image is url
     },
     user: {
         type:mongoose.Schema.Types.ObjectId,    /// provide id of user

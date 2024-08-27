@@ -27,18 +27,34 @@ router.get('/feed', isLoggedIn, function (req, res, next) {
   res.render('feed')
 })
 
-/// form action
-router.post('/upload', upload.single("file"), (req,res)=>{
+/// form action                   this will help to upload
+router.post('/upload', isLoggedIn, upload.single("file"), async (req,res)=>{      /// here file is same as profile.ejs input field name.
   if(!req.file){
     return res.status(404).send("No File Were uploaded.")
   }
-  res.send("File uploaded Succesfully.")
+  // res.send("File uploaded Succesfully.")
+  const user = await userModel.findOne({
+    username: req.session.passport.user
+  })
+
+  // post created
+  const post = await postModel.create({
+    image: req.file.filename,
+    imageText: req.body.filecaption,  ///profile.ejs name="filecation"
+    user: user._id
+  })
+
+  /// push post to user's posts
+  user.posts.push(post._id);
+  await user.save();
+  res.send("Done");
 })
 
 router.get('/profile', isLoggedIn, async function (req, res) {
   const user = await userModel.findOne({
     username: req.session.passport.user
   })
+  .populate("posts")
   console.log(user);
   res.render('profile',{user})
 })

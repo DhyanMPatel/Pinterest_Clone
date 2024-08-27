@@ -237,4 +237,21 @@ Now we try to make posts
             res.send("File Succesfully Uploaded.")
         })
 
-    
+    5. Now uploaded file will be save as a post and postid should be sent to user and userid to post.
+
+        -> first find user id in 4th Step
+
+            const user = await userModel.findOne({username: req.session.passport.user});
+        
+        -> create post in 4th Step
+
+            const post = await postModel.create({
+                image: req.file.filename,
+                imageText: req.body.filecation
+                user: user._id
+            })
+
+        -> push post to user's posts in 4th Step
+        
+            user.posts.push(post._id);
+            await user.save();
