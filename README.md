@@ -255,3 +255,29 @@ Now we try to make posts
         
             user.posts.push(post._id);
             await user.save();
+
+
+Now display that posts to /profile route
+
+steps:
+1. populate posts from user in index.js file
+
+    .populate("posts");
+
+2. go to profile.ejs file and wrap posts div.container tag
+
+    <div class="cards">
+        <% user.posts.forEach(function(post){ %>
+            <div class="card" style="width: 18rem">
+                <img src="/images/uploads/<%= post.image %>" class="card-img-top" alt="...">
+                <div class="card-body">
+                    <h5 class="card-title"><%= post.imageText %></h5>
+                </div>
+            </div>
+        <% }) %>
+    </div>
+
+3. After post submit we need to redirect to /profile route
+    -> go to index.js file and find upload API and change res.send("done") to,
+
+    res.redirect("/profile  ")

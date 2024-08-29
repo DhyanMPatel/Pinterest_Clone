@@ -47,7 +47,7 @@ router.post('/upload', isLoggedIn, upload.single("file"), async (req,res)=>{    
   /// push post to user's posts
   user.posts.push(post._id);
   await user.save();
-  res.send("Done");
+  res.redirect("/profile");
 })
 
 router.get('/profile', isLoggedIn, async function (req, res) {
