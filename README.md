@@ -141,6 +141,11 @@ Now search "how many models are requiered for Pinterest Clone"
             res.redirect('/')
         }
 
+    -> here a catch, in index.js file we just add localStrategy and use in passport const and pass userModel.authenticate()
+
+        const localStrategy = require("passport-local")
+        passport.use(new localStrategy(userModel.authenticate()));
+
 11. index.ejs => Created Register UI like pinterest UI
 12. login.ejs => Created Login UI like pinterest Login UI
 13. new need to show flash messages using connect-flash package
@@ -281,3 +286,40 @@ steps:
     -> go to index.js file and find upload API and change res.send("done") to,
 
     res.redirect("/profile  ")
+
+
+
+Today, we create Edit Profile Image Button. 
+    1. To do that we first add button. There we use Remix icon wesite github link at <head> to use Remix's all icons.
+
+        <link
+            href="https://cdn.jsdelivr.net/npm/remixicon@4.3.0/fonts/remixicon.css"
+            rel="stylesheet"
+        />
+
+    2. Now add icon button before img tag. Inside profileEdit id of div tag.
+
+        <div class="profileEdit">
+            <div class="profile-picture">
+                <img
+                    src="https://plus.unsplash.com/premium_photo-1696949706250-90624f778f6c?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxmZWF0dXJlZC1waG90b3MtZmVlZHw0Nnx8fGVufDB8fHx8fA%3D%3D"
+                    alt="Profile Picture">
+            </div>
+            <span id="uploadIcon" class="profileEditSpan">
+                <i class="ri-pencil-fill"></i>
+            </span>
+        </div>
+
+    3. Create a Form where input will be file
+
+        <form id="uploadForm" hidden action="/fileupload" method="post" enctype="multipart/form-data">
+            <input type="file" name="image">
+        </form>
+
+    4. when we click on edit icon that time we can select any profile photo. But how?
+
+        <script>
+            document.querySelector("#uploadIcon").addEventListener("click", function(){
+                document.querySelector("#uploadForm input").click()
+            })
+        </script>

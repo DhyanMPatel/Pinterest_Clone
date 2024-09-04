@@ -3,7 +3,7 @@ var router = express.Router();
 const userModel = require('./users');
 const postModel = require('./posts');
 const passport = require("passport");
-const upload = require("./multer")
+const { uploadPost, profilePics } = require("./multer")
 
 // Add these lines before your routes
 router.use(express.json()); // to parse JSON bodies
@@ -27,15 +27,13 @@ router.get('/feed', isLoggedIn, function (req, res, next) {
   res.render('feed')
 })
 
-/// form action                   this will help to upload
-router.post('/upload', isLoggedIn, upload.single("file"), async (req,res)=>{      /// here file is same as profile.ejs input field name.
-  if(!req.file){
+/// form action                   this will help to upload(input field name)
+router.post('/upload', isLoggedIn, uploadPost.single("file"), async (req, res) => {      /// here file is same as profile.ejs input field name.
+  if (!req.file) {
     return res.status(404).send("No File Were uploaded.")
   }
   // res.send("File uploaded Succesfully.")
-  const user = await userModel.findOne({
-    username: req.session.passport.user
-  })
+  const user = await userModel.findOne({ username: req.session.passport.user })
 
   // post created
   const post = await postModel.create({
@@ -50,13 +48,25 @@ router.post('/upload', isLoggedIn, upload.single("file"), async (req,res)=>{    
   res.redirect("/profile");
 })
 
+router.post("/fileupload", isLoggedIn, profilePics.single("image"), async (req, res) => {
+  if (!req.file) {
+    return res.status(404).send("No File were uploaded.")
+  }
+  // res.send("File uploaded SuccesFully")
+  const user = await userModel.findOne({ username: req.session.passport.user })
+
+  user.dp = req.file.filename;    ///contain unic name of file
+  await user.save();
+  res.redirect("/profile");
+})
+
 router.get('/profile', isLoggedIn, async function (req, res) {
   const user = await userModel.findOne({
     username: req.session.passport.user
   })
-  .populate("posts")
-  console.log(user);
-  res.render('profile',{user})
+    .populate("posts")
+  // console.log(user);
+  res.render('profile', { user })
 })
 
 router.post('/register', function (req, res) {
