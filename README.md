@@ -352,3 +352,7 @@ steps:
         });
     </script>
 
+
+22. We joint Nav.ejs file with Profile.ejs file
+
+    <%- include("nav") %>   // in profile.js file

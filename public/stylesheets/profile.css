@@ -14,22 +14,20 @@ body {
   .navbar{
     width: 100%;
     padding: 10px;
+
   }
 
-  .navbar h3{
+  .navlinks{
+    /* align-items:end; */
+    display: flex;
+    text-align: center;
+    justify-content: end;
   }
   
   .links{
     text-decoration: none;
     color: #555;
     padding: 10px;
-  }
-
-  .flex{
-    display: flex;
-    flex-wrap: wrap;
-    gap: 20px;
-    align-items: start;
   }
   
   .containerPancode {
@@ -100,7 +98,7 @@ body {
     background-color: #f30d19;
     color: #fff;
     text-decoration: none;
-    border-radius: 5px;
+    border-radius: 10px;
     transition: background-color 0.3s;
   }
   
@@ -110,7 +108,30 @@ body {
 
 
   .postDiv{
-    padding-top: 20px;
+    padding: 10px 0px;
+  }
+
+  
+
+  .cardContainer .flex{
+    padding-top: 13vh;
+    width: 1200px;
+    margin: auto;
+    columns: 4;
+    column-gap: 20px;
+  }
+
+  .cardContainer .flex .card {
+    width: 100%;
+  margin-bottom: 10px;
+  break-inside: avoid;
+  border-radius: 20px;
+  }
+
+  .cardContainer .flex .card img{
+    max-width: 100%;
+    min-width: 100%;
+    border-radius: 20px 20px 0px 0px;
   }
 
   .caption {

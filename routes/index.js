@@ -69,6 +69,23 @@ router.get('/profile', isLoggedIn, async function (req, res) {
   res.render('profile', { user })
 })
 
+router.get('/feed', isLoggedIn, async function (req, res) {
+  const user = await userModel.findOne({
+    username: req.session.passport.user
+  })
+    .populate("posts")
+  // console.log(user);
+  res.render('feed', { user })
+})
+
+router.post('/create', isLoggedIn, async function (req, res) {
+  const user = await userModel.findOne({
+    username: req.session.passport.user
+  })
+  .populate("posts");
+  res.render('create', { user })
+});
+
 router.post('/register', function (req, res) {
   const { username, email, fullname } = req.body;
   const userData = new userModel({ username, email, fullname });
