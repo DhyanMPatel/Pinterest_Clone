@@ -11,6 +11,20 @@ body {
     padding: 0;
   }
 
+  .navbar{
+    width: 100%;
+    padding: 10px;
+  }
+
+  .navbar h3{
+  }
+  
+  .links{
+    text-decoration: none;
+    color: #555;
+    padding: 10px;
+  }
+
   .flex{
     display: flex;
     flex-wrap: wrap;
@@ -20,7 +34,7 @@ body {
   
   .containerPancode {
     max-width: 80%;
-    margin: 40px auto;
+    margin: 0 auto 40px auto;
     padding: 20px;
     background-color: #fff;
     border: 1px solid #ddd;

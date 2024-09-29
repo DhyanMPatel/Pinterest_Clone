@@ -12,6 +12,16 @@
 </head>
 
 <body>
+
+  <div class="navbar">
+    <h3>Pinterest</h3>
+    <div class="navlinks">
+      <a href="/profile" class="links">Profile</a>
+      <a href="#" class="links">Feed</a>
+      <a href="/logout" class="button">Logout</a>
+    </div>
+  </div>
+
   <div class="containerPancode">
     <div class="cardPancode">
       <form id="uploadForm" hidden action="/fileupload" method="post" enctype="multipart/form-data">
@@ -19,7 +29,15 @@
       </form>
       <div class="profileEdit">
         <div class="profile-picture">
-          <img src="/images/profilePics/<%= user.dp %>" alt="Profile Picture">
+          <img id="profile-image"
+            src="/images/profilePics/<%= user.dp %>"
+            alt="Profile Picture"
+            >
+            <script>
+              document.getElementById("profile-image").addEventListener("error", function(){
+                this.src = "/images/profilePics/alterImage.jpg";
+              });
+            </script>
         </div>
         <span id="uploadIcon" class="profileEditSpan">
           <i class="ri-pencil-fill"></i>
@@ -32,7 +50,6 @@
       </h3>
       <p class="tagline">Lorem ipsum dolor sit amet consectetur adipisicing.</p>
       <p class="description">Lorem ipsum dolor sit amet consectetur adipisicing elit. Magni?</p>
-      <a href="/logout" class="button">Logout</a>
       <div class="postDiv">
         <form action="/upload" method="post" enctype="multipart/form-data" class="postDiv">
           <div class="uploadDP">

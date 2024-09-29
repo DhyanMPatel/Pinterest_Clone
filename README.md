@@ -201,7 +201,7 @@ Now search "how many models are requiered for Pinterest Clone"
         - To username write <%= user.username %>  
 
 
-Now we try to make posts
+15. Now we try to make posts
     -multer : can upload images
     -uuid : provide unic name to any post. When we try to download any post that time give random(Unic) name to that file
 
@@ -262,7 +262,7 @@ Now we try to make posts
             await user.save();
 
 
-Now display that posts to /profile route
+16. Now display that posts to /profile route
 
 steps:
 1. populate posts from user in index.js file
@@ -289,7 +289,7 @@ steps:
 
 
 
-Today, we create Edit Profile Image Button. 
+17. Today, we create Edit Profile Image Button. 
     1. To do that we first add button. There we use Remix icon wesite github link at <head> to use Remix's all icons.
 
         <link
@@ -323,3 +323,32 @@ Today, we create Edit Profile Image Button.
                 document.querySelector("#uploadForm input").click()
             })
         </script>
+
+
+18. Now, We design post input field in profile.ejs file and add some CSS in profile.css file
+
+    <div class="postDiv">
+        <form action="/upload" method="post" enctype="multipart/form-data" class="postDiv">
+            <div class="uploadDP">
+                <input type="text" name="filecaption" placeholder="Some Caption" class="caption" />
+                <i class="ri-folder-upload-line ProfileIcon"><input type="file" name="file" hidden /></i>
+            </div>
+            <input type="submit" class="submit-btn" />
+        </form>
+    </div>
+
+19. When user click on upload button that time file upload option should open,
+
+    document.querySelector(".uploadDP i").addEventListener("click", function () {
+      document.querySelector(".uploadDP i input").click();
+    })
+
+20. Navbar Arrenge to profile page
+21. Provide Alternative image to new Account if they have no any DP image initially using JS Script tag.
+
+    <script>
+        document.getelementById("profile-image").addEventListener("error", function(){
+            this.src = "/images/profilePics/alterImage.jpg";
+        });
+    </script>
+
