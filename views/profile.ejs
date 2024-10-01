@@ -37,7 +37,6 @@
           <input type="submit" class="submit-btn" />
         </form>
       </div>
-      <a href="/add">Add New Post</a>
     </div>
   </div>
 
@@ -52,6 +51,15 @@
             <h5 class="card-title">
               <%= post.imageText %> <!-- post.imageText use -->
             </h5>
+            <h6>
+              <%= new Intl.DateTimeFormat('en-US', {
+              year: 'numeric',
+              month: 'short',
+              day: 'numeric',
+              hour: '2-digit',
+              minute: '2-digit'
+              }).format(new Date(post.createdAt)) %>
+            </h6>
           </div>
         </div>
         <% }) %>

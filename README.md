@@ -1,3 +1,8 @@
+Data Association - when we joint User with their post using exchange their _Ids is called Data Association.
+
+
+
+
 ->At Starting we have npm install with Node.
 
 -> Then install express-generator Globally
@@ -23,10 +28,11 @@ Steps to Creeate new App =>
 
 
 
-Data Association
+Data Association (Work between 2 models)
     -> Refers to process linking or maching data points across different data sets, sources.
     -> Ex- user has multiple post. how we can say that this post is of that user? and also how we can say that this user make how much post? this Question's solution gives Data Association.
     -> Data Association will do just one thing. It take Id from user and post then give to each other to indicate that this post provided by this user and that user posted how much posts.
+    -> Data Association - when we joint User with their post using exchange their _Ids is called Data Association.
 
 
 Now Here i provide all Steps i do in This Post.
