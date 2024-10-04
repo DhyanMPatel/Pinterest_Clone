@@ -14,13 +14,11 @@ body {
   .navbar{
     width: 100%;
     padding: 10px;
-
   }
 
   .navlinks{
-    /* align-items:end; */
     display: flex;
-    text-align: center;
+    align-items:center;
     justify-content: end;
   }
   
@@ -93,8 +91,9 @@ body {
   }
   
   .button {
-    /* display: inline-block; */
-    padding: 10px 20px;
+    display: flex;
+    align-items: center;
+    padding: 5px 20px;
     background-color: #f30d19;
     color: #fff;
     text-decoration: none;

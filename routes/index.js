@@ -38,7 +38,7 @@ router.post('/upload', isLoggedIn, uploadPost.single("file"), async (req, res) =
   // post created
   const post = await postModel.create({
     image: req.file.filename,
-    imageText: req.body.filecaption,  ///profile.ejs name="filecation"
+    imageText: req.body.filecaption,   ///profile.ejs name="filecation"
     user: user._id
   })
 
@@ -69,9 +69,13 @@ router.get('/profile', isLoggedIn, async function (req, res) {
   res.render('profile', { user })
 })
 
-router.get('/postlist', async function (req,res){
+router.get('/postlist',isLoggedIn, async function (req,res){
   const posts = await postModel.find();
   res.render('postlist',{posts});
+})
+
+router.get('/profile/create',isLoggedIn, async function(req,res){
+  res.render("create");
 })
 
 router.post('/register', function (req, res) {

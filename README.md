@@ -362,3 +362,33 @@ steps:
 22. We joint Nav.ejs file with Profile.ejs file
 
     <%- include("nav") %>   // in profile.js file
+
+23. Want to Add Date to Created time in posts then,
+
+    <%= new Intl.DateTimeFormat('en-US', {
+        year: 'numeric',
+        month: 'short',
+        day: 'numeric',
+        hour: '2-digit',
+        minute: '2-digit'
+    }).format(new Date(post.createdAt)) %>
+
+24. Want to add Dynamic posts of all users then,
+
+    <% if (typeof posts !== 'undefined' && posts.length > 0) { %>
+        <% posts.forEach(post => { %>
+        <div class="box">
+            <a
+                    href="/images/uploads/<%= post.image %>" target="_blank">
+                    <img src="/images/uploads/<%= post.image %>"
+                        alt="image">
+                </a>
+                <div class="caption"><%= post.imageText %></div>
+        </div>
+        <% }) %>
+    <% } else { %>
+        <p>not Found Images</p>
+    <% } %>
+
+
+25. create page to create User posts

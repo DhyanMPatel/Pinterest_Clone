@@ -8,9 +8,7 @@
       <div class="profileEdit">
         <div class="profile-picture">
           <img id="profile-image"
-            src="/images/profilePics/<%= user.dp %>"
-            alt="Profile Picture"
-            >
+            src="/images/profilePics/<%= user.dp %>">
             <script>
               document.getElementById("profile-image").addEventListener("error", function(){
                 this.src = "/images/profilePics/alterImage.jpg";

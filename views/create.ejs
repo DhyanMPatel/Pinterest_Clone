@@ -1,11 +1,59 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Create New Post</title>
+    <link rel="stylesheet" href="/stylesheets/style.css">
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@4.3.0/fonts/remixicon.css" rel="stylesheet" />
 </head>
-<body>
-    <h2>Hello</h2>
+
+<body >
+
+
+    <div class="container">
+        <form action="/upload" method="post" enctype="multipart/form-data">
+            <div class="content">
+                <!--pinterest logo-->
+                <div class="imageInput">
+                    <i class="ri-folder-upload-line ProfileIcon">
+                        <input type="file" id="imageSelector" hidden>
+                    </i>
+                    <img id="previewImage" src="" alt="Preview Image" hidden>
+                </div>
+                <input type="text" name="title" placeholder="Enter Title" class="detail">
+                <textarea  name="description" placeholder="Enter Description" class="detail"></textarea>
+                <div class="submitContainer"><a href="/profile" class="cancle">Cancle</a><a href="" class="button">Post</a></div>
+            </div>
+        </form>
+    </div>
+    <script>
+        document.querySelector('.imageInput').addEventListener('click', function () {
+            document.querySelector('i input').click()
+        })
+
+        const imageSelector = document.getElementById('imageSelector');
+        const previewImage = document.getElementById('previewImage');
+
+        imageSelector.addEventListener('change', function () {
+            const file = this.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function (event) {
+                    previewImage.src = event.target.result;
+                    previewImage.style.display = 'block';
+                    document.querySelector('.ProfileIcon').classList
+                    .add('hidden');
+                };
+                reader.readAsDataURL(file);
+            } else {
+                previewImage.src = '';
+                previewImage.style.display="none";
+                document.querySelector('.ProfileIcon').classList.remove('hidden');
+            }
+        });
+    </script>
 </body>
+
 </html>
