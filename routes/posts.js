@@ -2,10 +2,13 @@ const mongoose = require('mongoose');
 
 // Define the Post schema
 const postSchema = new mongoose.Schema({
-    imageText: {
+    title: {
         type: String,
         required: true,
         trim: true,
+    },
+    description:{
+        type: String
     },
     image:{
         type:String,        /// image is url

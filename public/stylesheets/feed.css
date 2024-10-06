@@ -7,8 +7,45 @@
   font-family: "Gill Sans", "Gill Sans MT", "Myriad          Pro", "DejaVu Sans Condensed", Helvetica, Arial,        "sans-serif";
 }
 
-.navbar{
+nav{
   padding: 10px 20px;
+}
+
+.navbar{
+  width: 100%;
+  display: inline-flex;
+  padding: 7px 15px;
+  justify-content: space-between;
+}
+h3{
+  font-size: x-large;
+  font-weight: 400;
+}
+.navlinks{
+  display: inline-flex;
+  align-items: center;
+}
+.links{
+  text-decoration: none;
+  padding: 0px 15px;
+  font-size: large;
+  color: #656565;
+}
+
+.button {
+  display: flex;
+  align-items: center;
+  padding: 7px 20px;
+  background-color: #f30d19;
+  color: #fff;
+  text-decoration: none;
+  font-size: large;
+  border-radius: 10px;
+  transition: background-color 0.3s;
+}
+
+.button:hover {
+  background-color: #df0812;
 }
 
 .backToProfile{

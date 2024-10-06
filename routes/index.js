@@ -38,7 +38,8 @@ router.post('/upload', isLoggedIn, uploadPost.single("file"), async (req, res) =
   // post created
   const post = await postModel.create({
     image: req.file.filename,
-    imageText: req.body.filecaption,   ///profile.ejs name="filecation"
+    title: req.body.title,   ///create.ejs name="title"
+    description: req.body.description,   ///create.ejs name="description"
     user: user._id
   })
 
