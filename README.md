@@ -391,4 +391,74 @@ steps:
     <% } %>
 
 
-25. create page to create User posts
+25. create.ejs to create User posts
+
+    1. Add link to Create Post into Nav.ejs file.
+        
+        <a href="/profile/create"></a>
+    
+    2. Add route for Create Post in Index.js file.
+        
+        router.get("/profile/create", (req, res) => {
+            res.render("create");
+        })
+    
+    3. Create Form tag and make UI to Create post include Image, Title, Description also button such as Submit and Cancle.
+
+    4. Form has Action and Method Attribute which is,
+        
+        <form action="/upload" method="post" enctype="multipart/form-data">
+
+    5. Now Create API which name is "/upload" which will check if image will not post then send status "404" and will not submit.
+        
+        router.post("/upload", isLoggedIn, uploadPost.single("file"), async (req,res)=>{
+            if(!req.file){
+                return res.status(404).send("No File Found")
+            }
+        })
+
+    6. Also take User details from userModel and Create post into postModel Module with take some values like Image, Title, Description, also take User ID which is most Importent.
+
+        const user = await userModel.findOne({username:req,session.passport})
+        const post = await postModel.create({
+            image: req.file.filename,
+            title: req.body.title,
+            description: res.body.description,
+            user: user._id
+        })
+
+    7. Also we provide Post ID to User through push() and redirect to profile page.
+
+        user.posts.push(post._id);
+        await user.save();
+        res.redirect("/profile")
+
+
+26. When user click on Image then all Details about Image will display to use, but how?
+
+    1. First pass post id from postlist.ejs file through URL, How?
+
+        <a href="/post/<%= post._id %>">
+            <img src="/image/uploads/<%= post.image %>">
+        </a>
+
+    2. Create API in index.js file which is use to past id to post.ejs file
+
+        router.get("/post/:id", isLoggedIn, async function(req,res)=>{
+            postModel.findOne({_id: req.params.id}).populate("user")
+            .then(post => {
+                res.render('post',{ post });
+            });
+        })
+    
+    3. Now, Create that page where we Want to Display all Things 
+        => post.ejs
+    
+    4. Now display all things using API,
+
+        <%= post.image %>
+        <%= post.title %>
+        <%= post.user.username%>
+        <%= post.decription%>
+        <%= post.createdAt%>
+

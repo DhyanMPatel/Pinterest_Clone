@@ -27,6 +27,45 @@ router.get('/feed', isLoggedIn, function (req, res, next) {
   res.render('feed')
 })
 
+router.post("/fileupload", isLoggedIn, profilePics.single("image"), async (req, res) => {
+  if (!req.file) {
+    return res.status(404).send("No File were uploaded.")
+  }
+  // res.send("File uploaded SuccesFully")
+  const user = await userModel.findOne({ username: req.session.passport.user })
+  
+  user.dp = req.file.filename;    ///contain unic name of file
+  await user.save();
+  res.redirect("/profile");
+})
+
+router.get('/profile', isLoggedIn, async function (req, res) {
+  const user = await userModel.findOne({
+    username: req.session.passport.user
+  })
+  .populate("posts")
+  // console.log(user);
+  res.render('profile', { user })
+})
+
+router.get('/postlist', isLoggedIn, async function (req, res) {
+  const user = await userModel.find()
+  const posts = await postModel.find();
+  res.render('postlist', { posts, user });
+})
+
+router.get('/post/:id', isLoggedIn, async function (req, res) {
+  postModel.findOne({_id: req.params.id}).populate("user")
+  .then(post => {
+    // res.send(post)
+    res.render('post', { post });
+  });
+})
+
+router.get('/profile/create', isLoggedIn, async function (req, res) {
+  res.render("create");
+})
+
 /// form action                   this will help to upload(input field name)
 router.post('/upload', isLoggedIn, uploadPost.single("file"), async (req, res) => {      /// here file is same as profile.ejs input field name.
   if (!req.file) {
@@ -47,36 +86,6 @@ router.post('/upload', isLoggedIn, uploadPost.single("file"), async (req, res) =
   user.posts.push(post._id);
   await user.save();
   res.redirect("/profile");
-})
-
-router.post("/fileupload", isLoggedIn, profilePics.single("image"), async (req, res) => {
-  if (!req.file) {
-    return res.status(404).send("No File were uploaded.")
-  }
-  // res.send("File uploaded SuccesFully")
-  const user = await userModel.findOne({ username: req.session.passport.user })
-
-  user.dp = req.file.filename;    ///contain unic name of file
-  await user.save();
-  res.redirect("/profile");
-})
-
-router.get('/profile', isLoggedIn, async function (req, res) {
-  const user = await userModel.findOne({
-    username: req.session.passport.user
-  })
-    .populate("posts")
-  // console.log(user);
-  res.render('profile', { user })
-})
-
-router.get('/postlist',isLoggedIn, async function (req,res){
-  const posts = await postModel.find();
-  res.render('postlist',{posts});
-})
-
-router.get('/profile/create',isLoggedIn, async function(req,res){
-  res.render("create");
 })
 
 router.post('/register', function (req, res) {
