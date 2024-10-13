@@ -1,0 +1,139 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f5f5f5;
+    margin: 0;
+    padding: 0;
+}
+
+.navbar {
+    width: 100%;
+    display: inline-flex;
+    padding: 7px 15px;
+    justify-content: space-between;
+}
+
+h3 {
+    font-size: x-large;
+    font-weight: 400;
+}
+
+.navlinks {
+    display: inline-flex;
+    align-items: center;
+}
+
+.links {
+    text-decoration: none;
+    padding: 0px 15px;
+    font-size: large;
+    color: #656565;
+}
+
+.button {
+    display: flex;
+    align-items: center;
+    padding: 7px 20px;
+    background-color: #f30d19;
+    color: #fff;
+    text-decoration: none;
+    font-size: large;
+    border-radius: 10px;
+    transition: background-color 0.3s;
+}
+
+.button:hover {
+    background-color: #df0812;
+}
+
+.mainContainer{
+    display: flex;
+    flex-direction: row;
+}
+
+.container {
+    margin: 80px auto;
+    width: auto;
+    padding: 100px;
+    background-color: #fff;
+    border: 1px solid #ddd;
+    text-align: center;
+    border-radius: 20px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.active-label {
+    box-shadow: 0 0 10px rgba(76, 175, 80, 0.5);  /* Optional: adds a glow effect */
+    border: 5px solid #4CAF50;  /* Green border for active plan */
+    display: block;
+    min-width: 40vh;
+    margin-top: 40px;
+    margin-bottom: 5px;
+    padding: 18px;
+    background-color: #4CAF50;
+    color: white;
+    border-radius: 50px;
+    font-weight: bold;
+    font-size: 16pt;
+}
+
+.container-top {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+
+.container-top span {
+    margin: 0 35px;
+    font-size: 20pt;
+    font-weight: bold;
+    padding-top: 15px;
+    display: inline;
+    color: #f30d19;
+}
+
+
+/* PRICE */
+
+.price {
+    font-family: 'Open Sans', sans-serif !important;
+    font-size: 40pt;
+    font-family: Arial;
+    font-weight: bold;
+    color: #888;
+    margin: 0;
+    margin-top: 30px;
+    margin-bottom: 0px;
+}
+
+.period {
+    font-size: 13pt;
+    color: #5e6167;
+}
+
+#monthlySub, #yearlySub {
+    display: block;
+    min-width: 40vh;
+    margin-top: 40px;
+    margin-bottom: 5px;
+    padding: 18px;
+    background-color: #fff;
+    color: #f30d19;
+    border-radius: 50px;
+    border: 3px solid #f30d19;
+    cursor: pointer;
+    font-size: 16pt;
+    transition: all 0.5s;
+    text-decoration: none;
+}
+
+#monthlySub:hover, #yearlySub:hover {
+    color: white;
+    background-color: #f30d19;
+}

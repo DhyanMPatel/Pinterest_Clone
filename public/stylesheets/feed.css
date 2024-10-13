@@ -4,7 +4,7 @@
   padding: 0;
 	background-color: #f5f5f5;
   box-sizing: border-box;
-  font-family: "Gill Sans", "Gill Sans MT", "Myriad          Pro", "DejaVu Sans Condensed", Helvetica, Arial,        "sans-serif";
+  font-family: Arial, sans-serif;
 }
 
 nav{
@@ -79,6 +79,24 @@ h3{
   min-width: 100%;
   border-radius: 20px;
   z-index: 0;
+}
+.downloadBox{
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  border-radius: 50%;
+  padding: 3px;
+  background-color: #f5f5f5;
+  opacity: 0;
+  transition: opacity 0.5s ease-in-out;
+}
+.downloadbtn{
+  border-radius: 50%;
+  color: #000;
+  font-size: x-large;
+}
+.box:hover .downloadBox{
+  opacity: 50%;
 }
 .createdDate{
   position: absolute;
