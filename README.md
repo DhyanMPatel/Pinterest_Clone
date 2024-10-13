@@ -405,6 +405,8 @@ steps:
     
     3. Create Form tag and make UI to Create post include Image, Title, Description also button such as Submit and Cancle.
 
+        
+
     4. Form has Action and Method Attribute which is,
         
         <form action="/upload" method="post" enctype="multipart/form-data">
@@ -462,3 +464,83 @@ steps:
         <%= post.decription%>
         <%= post.createdAt%>
 
+27. Now Create Payment Option => To do this we need to import and install "stripe" Api and import,
+
+        const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY)
+
+    -here secret key we get from "stripe.com => developer => API Keys => Secret Key"
+
+    -also need to import dotenv Api for .env variable config.
+
+        require("dotenv").config()
+
+    1. Create API "/subscription" in index.js.
+
+        router.get('/subscription',isLoggedIn, async(req,res)=>{
+            res.render('subscription');
+        });
+    
+    2. Add Subscription Feature in user.js Schema with isActive, startDate, endDate, Plan, StrinpeCustomerId,StripesubscriptionId, lastPaymentDate, paymentStatus like features.
+
+    3. Create Subscription.ejs file where user can Select plan.
+
+    4. At "Subscribe now" button create a "a" tag which is redirect to "/subscribe" and pass "plan".
+    
+    5. Now When user can Select any Subscription from both. That time user will go on it's plan
+
+    6. now plan if monthly then priceId should be of monthly plan which we can get from "stripe.com => Product Catalogue => Monthly paln => 59 rupee => At right-top corner"
+
+    7. If plan is Yearly then "stripe.com => Product Catalogue => Yearly paln => 599 rupee => At right-top corner".
+
+    8. Now Create session, in index.js
+
+        const session = await stripe.checkout.sessions.create({
+            mode:"subscription",
+            line_items: [price:priceId,quantity:1]
+            success_url: "",
+            cancel_url: "",
+            expand:['subscription','customer']
+        })
+
+    9. Now Success_url and cancel_url needs API
+
+        Success
+        router.get('/success',isLoggedIn, async(req,res)=>{
+            const sessionId = req.query.session_id
+            try{
+                const session = await stripe.checkout.sessions.retrieve(sessionId,{
+                    expand:['subscription','customer']
+                });
+                if(session.payment_status === 'paid'){
+                    const subscription = session.subscription;
+                    const customer = session.customer;
+
+                    find user Email
+
+                    if(user){
+                        user.subscription = {
+                            isActive: true,
+                            startDate: new Date(subscription.current_period_start*1000),
+                            endDate: new Date(subscription.current_period_end*1000),
+                            plan: subscription.plan.inerval === 'month'?"monthly":"yearly",
+                            stripeCustomerId: customer.id,
+                            stripeSubscriptionId: subscription.id,
+                            lastPaumentDate: new Date(),
+                            paymentStatus: 'paid',
+                        }
+                    };
+                    await user.save();
+                    res.render('success')
+                }
+            } catch(err){
+                console.error('Error retrieving session:', error);
+            }
+        }
+
+
+        Cancel
+        router.get('/cancel', isLoggedIn, (req,res)=>{
+            res.render('cancel');
+        })
+
+    10. Now create success UI and cancel UI.

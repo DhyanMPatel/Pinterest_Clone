@@ -34,6 +34,36 @@ const userSchema = new mongoose.Schema({
         required: true,
         trim: true,
     },
+    subscription: {
+        isActive: {
+            type: Boolean,
+            default: false,
+        },
+        startDate: {
+            type: Date,
+        },
+        endDate: {
+            type: Date,
+        },
+        plan: {
+            type: String, // e.g., 'monthly', 'yearly', etc.
+            enum: ['monthly', 'yearly'], // Adjust based on your plans
+        },
+        stripeCustomerId: {
+            type: String, // Store the Stripe customer ID
+        },
+        stripeSubscriptionId: {
+            type: String, // Store the Stripe subscription ID
+        },
+        lastPaymentDate: {
+            type: Date,
+        },
+        paymentStatus: {
+            type: String,
+            enum: ['paid', 'pending', 'failed'], // Adjust based on your needs
+            default: 'pending',
+        },
+    },
     // }, {
     //     timestamps: true, // Automatically add createdAt and updatedAt fields
 });

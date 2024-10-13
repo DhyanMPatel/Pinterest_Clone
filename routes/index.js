@@ -4,6 +4,8 @@ const userModel = require('./users');
 const postModel = require('./posts');
 const passport = require("passport");
 const { uploadPost, profilePics } = require("./multer")
+require("dotenv").config()
+const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY)
 
 // Add these lines before your routes
 router.use(express.json()); // to parse JSON bodies
@@ -33,7 +35,7 @@ router.post("/fileupload", isLoggedIn, profilePics.single("image"), async (req, 
   }
   // res.send("File uploaded SuccesFully")
   const user = await userModel.findOne({ username: req.session.passport.user })
-  
+
   user.dp = req.file.filename;    ///contain unic name of file
   await user.save();
   res.redirect("/profile");
@@ -43,7 +45,7 @@ router.get('/profile', isLoggedIn, async function (req, res) {
   const user = await userModel.findOne({
     username: req.session.passport.user
   })
-  .populate("posts")
+    .populate("posts")
   // console.log(user);
   res.render('profile', { user })
 })
@@ -55,11 +57,11 @@ router.get('/postlist', isLoggedIn, async function (req, res) {
 })
 
 router.get('/post/:id', isLoggedIn, async function (req, res) {
-  postModel.findOne({_id: req.params.id}).populate("user")
-  .then(post => {
-    // res.send(post)
-    res.render('post', { post });
-  });
+  postModel.findOne({ _id: req.params.id }).populate("user")
+    .then(post => {
+      // res.send(post)
+      res.render('post', { post });
+    });
 })
 
 router.get('/profile/create', isLoggedIn, async function (req, res) {
@@ -115,10 +117,106 @@ router.get("/logout", function (req, res) {
   })
 })
 
+router.get('/subscription', isLoggedIn, async (req, res) => {
+  const user = await userModel.findOne({ username: req.session.passport.user })
+  res.render('subscription', { user });
+})
+
+router.get('/subscribe', isLoggedIn, async (req, res) => {
+  const plan = req.query.plan
+
+  if (!plan) {
+    return res.status(400).send({ message: "Invalid plan" })
+  }
+
+  let priceId
+
+  switch (plan.toLowerCase()) {
+    case 'monthly':
+      priceId = 'price_1Q8cJCP6O804XVHpHTIelhjt'  /// priceId of Month
+      break;
+
+    case 'yearly':
+      priceId = 'price_1Q8jHxP6O804XVHpf89CuqIQ'  /// priceId of Year
+      break;
+
+    default:
+      return res.status(400).send({ message: "Invalid plan" })
+  }
+
+  const user = await userModel.findOne({ username: req.session.passport.user })
+  const userEmail = user.email
+
+  const session = await stripe.checkout.sessions.create({
+    mode: 'subscription',
+    line_items: [
+      {
+        price: priceId,
+        quantity: 1,
+      }
+    ],
+    customer_email: userEmail,
+    // redirect when user payment was Successfully deleteOne.
+    success_url: `${process.env.BASE_URL}/success?session_id={CHECKOUT_SESSION_ID}`,
+    cancel_url: `${process.env.BASE_URL}/cancel`,
+    expand: ['subscription', 'customer']
+  })
+
+  // console.log(session);
+  res.redirect(session.url);  /// redirect to url of session
+})
+
+router.get('/success', isLoggedIn, async (req, res) => {
+  const sessionId = req.query.session_id      /// from /subscribe Api success_url.
+  try {
+    const session = await stripe.checkout.sessions.retrieve(sessionId, {
+      expand: ['subscription', 'customer']
+    });
+    if (session.payment_status === 'paid') {
+      const subscription = session.subscription;
+      const customer = session.customer;
+
+      // Find the user by email
+      const user = await userModel.findOne({ email: session.customer_email });
+
+      if (user) {
+        // Update the user's subscription information
+        user.subscription = {
+          isActive: true,
+          startDate: new Date(subscription.current_period_start * 1000), // Convert UNIX timestamp to Ms Date
+          endDate: new Date(subscription.current_period_end * 1000), // Convert UNIX timestamp to Ms Date
+          plan: subscription.plan.interval === 'month' ? 'monthly' : 'yearly',
+          stripeCustomerId: customer.id,
+          stripeSubscriptionId: subscription.id,
+          lastPaymentDate: new Date(),
+          paymentStatus: 'paid'
+        };
+
+        await user.save();
+
+        res.render('success', {
+          message: 'Subscription successful!',
+          subscriptionDetails: user.subscription
+        });
+      } else {
+        res.status(404).send('User not found');
+      }
+    }
+  } catch (error) {
+    // console.log(session)
+    console.error('Error retrieving session:', error);
+    res.status(500).send('An error occurred');
+  }
+})
+
+router.get("/cancel", isLoggedIn, (req, res) => {
+  res.render('cancel');
+})
+
+
 function isLoggedIn(req, res, next) {
   if (req.isAuthenticated()) return next();
   res.redirect('/login')
 }
-
 
 module.exports = router;
