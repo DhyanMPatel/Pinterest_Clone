@@ -2,50 +2,50 @@
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Subscription</title>
-    <link rel="stylesheet" href="/stylesheets/subscription.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Subscription</title>
+  <link rel="stylesheet" href="/stylesheets/subscription.css">
 </head>
 
 <body>
-    <div class="navbar">
-        <h3>Pinterest</h3>
-        <div class="navlinks">
-            <a href="/profile" class="links">Profile</a>
-            <a href="/subscription" class="links">Subscription</a>
-            <a href="/profile/create" class="links">Create</a>
-            <a href="/postlist" class="links">Feed</a>
-            <a href="/logout" class="button">Logout</a>
-        </div>
+  <div class="navbar">
+    <h3>Pinterest</h3>
+    <div class="navlinks">
+      <a href="/profile" class="links">Profile</a>
+      <a href="/subscription" class="links">Subscription</a>
+      <a href="/profile/create" class="links">Create</a>
+      <a href="/postlist" class="links">Feed</a>
+      <a href="/logout" class="button">Logout</a>
     </div>
+  </div>
 
-    <div class="mainContainer">
-        <div class="container">
-            <div class="container-top">
-                <span>Monthly</span>
-            </div>
-            <p class="price">59 &#8360; </p>
-            <span class="period">per month, billed monthly</span>
-            <% if (user.subscription.isActive && user.subscription.plan === 'monthly') { %>
-                <span class="active-label">Active Plan</span>
-            <% } else { %>
-                <a href="/subscribe?plan=monthly" id="monthlySub">Subscribe now</a>
-            <% } %>
-        </div>
-        <div class="container">
-            <div class="container-top">
-                <span>Yearly</span>
-            </div>
-            <p class="price">599 &#8360; </p>
-            <span class="period">per Year, billed annually</span>
-            <% if (user.subscription.isActive && user.subscription.plan === 'yearly') { %>
-                <span class="active-label">Active Plan</span>
-            <% } else { %>
-                <a href="/subscribe?plan=yearly" id="yearlySub">Subscribe now</a>
-            <% } %>
-        </div>
+  <div class="mainContainer">
+    <div class="container">
+      <div class="container-top">
+        <span>Monthly</span>
+      </div>
+      <p class="price">59 &#8360; </p>
+      <span class="period">per month, billed monthly</span>
+      <% if (user.subscription.isActive && user.subscription.plan === 'monthly') { %>
+      <span class="active-label">Active Plan</span>
+      <% } else { %>
+      <a href="/subscribe?plan=monthly" id="monthlySub">Subscribe now</a>
+      <% } %>
     </div>
+    <div class="container">
+      <div class="container-top">
+        <span>Yearly</span>
+      </div>
+      <p class="price">599 &#8360; </p>
+      <span class="period">per Year, billed annually</span>
+      <% if (user.subscription.isActive && user.subscription.plan === 'yearly') { %>
+      <span class="active-label">Active Plan</span>
+      <% } else { %>
+      <a href="/subscribe?plan=yearly" id="yearlySub">Subscribe now</a>
+      <% } %>
+    </div>
+  </div>
 </body>
 
 </html>

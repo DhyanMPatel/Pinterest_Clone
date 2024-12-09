@@ -2,46 +2,63 @@
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-    <link href="https://cdn.jsdelivr.net/npm/remixicon@4.3.0/fonts/remixicon.css" rel="stylesheet" />
-    <link rel="stylesheet" href="/stylesheets/post.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <link href="https://cdn.jsdelivr.net/npm/remixicon@4.3.0/fonts/remixicon.css" rel="stylesheet" />
+  <link rel="stylesheet" href="/stylesheets/post.css">
 </head>
 
 <body>
-    <div class="container">
-        <nav>
-            <a href="/postlist" class="backToPostlist"><i class="ri-arrow-left-line"></i></a>
-        </nav>
+  <nav>
+    <a href="/postlist" class="backToPostlist"><i class="ri-arrow-left-line"></i></a>
+  </nav>
+  <div class="container">
 
-        <table>
-            <tr>
-                <td class="imageBox" rowspan="5">
-                    <div class="image">
-                        <div class="imageInput">
-                            <img id="previewImage" src="/images/uploads/<%= post.image %>" alt="Preview Image">
-                        </div>
-                    </div>
-                </td>
-            </tr>
-            <tr>
-                <td><%= post.title %></td>
-            </tr>
-            <tr>
-                <td><%= post.user.username %></td>
+    <table>
+      <tr class="img">
+        <td class="imageBox" rowspan="5">
+          <div class="image">
+            <a class="downloadBox">
+              <!-- HTML element data-image-id="<%= post._id %>" This suggests that the intention is to use JavaScript to attach an event listener to this element, which would then be able to access the image ID when the download button is clicked. -->
+              <i class="ri-download-line downloadbtn"></i>
+            </a>
+            <div class="imageInput">
+              <img id="previewImage" src="/images/uploads/<%= post.image %>" alt="Preview Image">
+            </div>
+          </div>
+        </td>
+      </tr>
+      <tr class="details">
+        <td style="height: 50px;">
+          <div>
+            <h2><%= post.title %></h2>
+            <h4 ><%= post.description %></h4>
+          </div>
+        </td>
+      </tr>
+      <tr class="details">
+        <td>
+          <div class="userDetail">
+            <div><img width="50px" height="50px" src="/images/profilePics/<%= post.user.dp %>" alt="profile Pic" class="profilePic"></div>
+            <div class="username">
+              <h3><%= post.user.fullname %></h3>
+              <h4>@<%= post.user.username %></h4>
+            </div>
+          </div>
+        </td>
 
-            </tr>
-            <tr>
-                <td><%= post.description %></td>
-            </tr>
-            <tr>
-                <td><%= new Intl.DateTimeFormat('en-US', { year: 'numeric' , month: 'short' , day: 'numeric' ,
-                    hour: '2-digit' , minute: '2-digit' }).format(new Date(post.createdAt)) %></td>
-            </tr>
+      </tr>
+      <tr class="details">
+        <td><%= post.description %></td>
+      </tr>
+      <tr class="details">
+        <td><%= new Intl.DateTimeFormat('en-US', { year: 'numeric' , month: 'short' , day: 'numeric' ,
+                        hour: '2-digit' , minute: '2-digit' }).format(new Date(post.createdAt)) %></td>
+      </tr>
 
-        </table>
-    </div>
+    </table>
+  </div>
 </body>
 
 </html>

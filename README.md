@@ -1,3 +1,6 @@
+Ejs- ejs is to generate server side rendering HTML templates
+
+
 Data Association - when we joint User with their post using exchange their _Ids is called Data Association.
 
 

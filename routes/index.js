@@ -50,10 +50,11 @@ router.get('/profile', isLoggedIn, async function (req, res) {
   res.render('profile', { user })
 })
 
-router.get('/postlist', isLoggedIn, async function (req, res) {
+router.get('/postlist', isLoggedIn, checkSubscriptionStatus, async function (req, res) {
   const user = await userModel.find()
   const posts = await postModel.find();
-  res.render('postlist', { posts, user });
+  const perticularUser = await userModel.findOne({username: req.session.passport.user})
+  res.render('postlist', { posts, user, perticularUser });
 })
 
 router.get('/post/:id', isLoggedIn, async function (req, res) {
@@ -113,7 +114,7 @@ router.post("/login", passport.authenticate("local", {
 router.get("/logout", function (req, res) {
   req.logout(function (error) {
     if (error) { return next(error) }
-    res.redirect('/');
+    res.redirect('/login');
   })
 })
 
@@ -217,6 +218,32 @@ router.get("/cancel", isLoggedIn, (req, res) => {
 function isLoggedIn(req, res, next) {
   if (req.isAuthenticated()) return next();
   res.redirect('/login')
+}
+
+async function checkSubscriptionStatus(req, res, next) {
+  const user = await userModel.findOne({ username: req.session.passport.user })
+  if (user) {
+    if (user.subscription.isActive && user.subscription.endDate) {
+      const today = new Date();
+      const endDate = new Date(user.subscription.endDate);
+
+      if (today > endDate) {
+        user.subscription.isActive = false;
+        user.subscription.paymentStatus = "pending";
+
+        await user.save();
+
+        return res.redirect("/subscription");
+      }
+    } else {
+      // If subscription is not active, redirect to subscription page
+      return res.redirect("/subscription");
+    }
+  } else {
+    // If user is not found, redirect to login
+    return res.redirect("/register");
+  }
+  next();
 }
 
 module.exports = router;
