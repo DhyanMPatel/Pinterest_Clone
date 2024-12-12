@@ -10,7 +10,6 @@
 </head>
 
 <body>
-
   <% if(perticularUser.subscription.isActive) { %>
   <%- include('nav') %>
 
@@ -24,20 +23,16 @@
     <div class="box">
       <a href="/post/<%= post._id %>">
         <img src="/images/uploads/<%= post.image %>" alt="image">
-        <a href="" class="downloadBox" data-image-id="<%= post._id %>">
-          <i class="ri-download-line downloadbtn"></i>
-        </a>
       </a>
       <h6 class="createdDate">
-        <%= new Intl.DateTimeFormat('en-US', { year: 'numeric' , month: 'short' , day: 'numeric' ,
-                                hour: '2-digit' , minute: '2-digit' }).format(new Date(post.createdAt)) %>
+        <%= new Intl.DateTimeFormat('en-US', { year: 'numeric' , month: 'short' , day: 'numeric'
+                                    , hour: '2-digit' , minute: '2-digit' }).format(new Date(post.createdAt)) %>
       </h6>
     </div>
     <% }) %>
     <% } else { %>
     <p>No Posts Found</p>
     <% } %>
-
   </div>
   <% } %>
 </body>

@@ -1,4 +1,8 @@
 /node_modules
+<<<<<<< HEAD
 .env
-/public/images/profilePics/*
-/public/images/uploads/*
+/public/images/*
+=======
+/public/images/*
+.env
+>>>>>>> ecd8ea9572879e17105b9e23b0f2489dfc17652e
