@@ -2,42 +2,44 @@
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>posts</title>
-    <link rel="stylesheet" href="/stylesheets/feed.css">
-    <link href="https://cdn.jsdelivr.net/npm/remixicon@4.3.0/fonts/remixicon.css" rel="stylesheet" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>posts</title>
+  <link rel="stylesheet" href="/stylesheets/feed.css">
+  <link href="https://cdn.jsdelivr.net/npm/remixicon@4.3.0/fonts/remixicon.css" rel="stylesheet" />
 </head>
 
 <body>
 
-    <%- include('nav') %>
+  <% if(perticularUser.subscription.isActive) { %>
+  <%- include('nav') %>
 
-        <nav>
-            <a href="/profile" class="backToProfile"><i class="ri-arrow-left-line"></i></a>
-        </nav>
+  <nav>
+    <a href="/profile" class="backToProfile"><i class="ri-arrow-left-line"></i></a>
+  </nav>
 
-        <div class="container">
-            <% if (typeof posts !=='undefined' && posts.length> 0) { %>
-                <% posts.forEach(post=> { %>
-                    <div class="box">
-                        <a href="/post/<%= post._id %>">
-                            <img src="/images/uploads/<%= post.image %>" alt="image">
-                                <a href="" class="downloadBox" data-image-id="<%= post._id %>">
-                                    <i class="ri-download-line downloadbtn"></i>
-                                </a>
-                        </a>
-                        <h6 class="createdDate">
-                            <%= new Intl.DateTimeFormat('en-US', { year: 'numeric' , month: 'short' , day: 'numeric' ,
+  <div class="container">
+    <% if (typeof posts !=='undefined' && posts.length> 0) { %>
+    <% posts.forEach(post=> { %>
+    <div class="box">
+      <a href="/post/<%= post._id %>">
+        <img src="/images/uploads/<%= post.image %>" alt="image">
+        <a href="" class="downloadBox" data-image-id="<%= post._id %>">
+          <i class="ri-download-line downloadbtn"></i>
+        </a>
+      </a>
+      <h6 class="createdDate">
+        <%= new Intl.DateTimeFormat('en-US', { year: 'numeric' , month: 'short' , day: 'numeric' ,
                                 hour: '2-digit' , minute: '2-digit' }).format(new Date(post.createdAt)) %>
-                        </h6>
-                    </div>
-                    <% }) %>
-                        <% } else { %>
-                            <p>No Posts Found</p>
-                            <% } %>
+      </h6>
+    </div>
+    <% }) %>
+    <% } else { %>
+    <p>No Posts Found</p>
+    <% } %>
 
-        </div>
+  </div>
+  <% } %>
 </body>
 
 </html>

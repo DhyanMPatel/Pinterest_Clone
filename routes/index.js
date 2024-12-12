@@ -17,12 +17,37 @@ passport.use(new localStrategy(userModel.authenticate()));
 
 /* GET home page. */
 router.get('/', function (req, res, next) {
-  res.render('index');
+  res.render('index',{error: req.flash("error") });
 });
+
+router.post('/register', function (req, res) {
+  const { username, email, fullname } = req.body;
+  const userData = new userModel({ username, email, fullname });
+
+  userModel.register(userData, req.body.password)   /// simplify user registration
+    .then(function () {
+      passport.authenticate("local")/* now middleware comes -> */(req, res, function () {
+        res.redirect("/profile");
+      })
+    })
+})
 
 router.get('/login', function (req, res, next) {
   // console.log(req.flash("error"))         // this will print flash value when failureFlash becomes true
   res.render('login', { error: req.flash("error") })
+})
+
+router.post('/login', async (req,res,next)=>{
+  const {username, password} = req.body;
+  const user = await userModel.findOne({username});
+  if (!user){
+    req.flash("error","User not found. Please Register First");
+  }
+  passport.authenticate("local", {
+    successRedirect: "/profile",
+    failureRedirect: '/login',
+    failureFlash: true,
+  })(req, res, next);
 })
 
 router.get('/feed', isLoggedIn, function (req, res, next) {
@@ -50,10 +75,11 @@ router.get('/profile', isLoggedIn, async function (req, res) {
   res.render('profile', { user })
 })
 
-router.get('/postlist', isLoggedIn, async function (req, res) {
+router.get('/postlist', isLoggedIn,checkSubscriptionStatus, async function (req, res) {
   const user = await userModel.find()
   const posts = await postModel.find();
-  res.render('postlist', { posts, user });
+  const perticularUser = await userModel.findOne({username: req.session.passport.user})
+  res.render('postlist', { posts, user, perticularUser });
 })
 
 router.get('/post/:id', isLoggedIn, async function (req, res) {
@@ -90,30 +116,10 @@ router.post('/upload', isLoggedIn, uploadPost.single("file"), async (req, res) =
   res.redirect("/profile");
 })
 
-router.post('/register', function (req, res) {
-  const { username, email, fullname } = req.body;
-  const userData = new userModel({ username, email, fullname });
-
-  userModel.register(userData, req.body.password)   /// simplify user registration
-    .then(function () {
-      passport.authenticate("local")/* now middleware comes -> */(req, res, function () {
-        res.redirect("/profile");
-      })
-    })
-})
-
-router.post("/login", passport.authenticate("local", {
-  successRedirect: "/profile",
-  failureRedirect: '/login',
-  failureFlash: true,       /// this will return array in console.
-}), function (req, res) {
-
-})
-
 router.get("/logout", function (req, res) {
   req.logout(function (error) {
     if (error) { return next(error) }
-    res.redirect('/');
+    res.redirect('/login');
   })
 })
 
@@ -217,6 +223,32 @@ router.get("/cancel", isLoggedIn, (req, res) => {
 function isLoggedIn(req, res, next) {
   if (req.isAuthenticated()) return next();
   res.redirect('/login')
+}
+
+async function checkSubscriptionStatus(req, res, next) {
+  const user = await userModel.findOne({ username: req.session.passport.user })
+  if (user) {
+    if (user.subscription.isActive && user.subscription.endDate) {
+      const today = new Date();
+      const endDate = new Date(user.subscription.endDate);
+
+      if (today > endDate) {
+        user.subscription.isActive = false;
+        user.subscription.paymentStatus = "pending";
+
+        await user.save();
+
+        return res.redirect("/subscription");
+      }
+    } else {
+      // If subscription is not active, redirect to subscription page
+      return res.redirect("/subscription");
+    }
+  } else {
+    // If user is not found, redirect to login
+    return res.redirect("/register");
+  }
+  next();
 }
 
 module.exports = router;

@@ -110,6 +110,7 @@ Now Start the Project
 Now search "how many models are requiered for Pinterest Clone"
 
 7. Register API
+
     ->During Register Page we need username, email, fullname from body.
 
         const { username, email, fullname } = req.body;
@@ -125,6 +126,7 @@ Now search "how many models are requiered for Pinterest Clone"
         })
 
 8. Login API
+
     ->here we use meddleware passport.authenticate()
 
         passport.authenticate("local",{
@@ -153,7 +155,13 @@ Now search "how many models are requiered for Pinterest Clone"
         passport.use(new localStrategy(userModel.authenticate()));
 
 11. index.ejs => Created Register UI like pinterest UI
+
+    ![Registration Page](public/images/github%20Photos/Registration%20Page.png)
+
 12. login.ejs => Created Login UI like pinterest Login UI
+
+    ![Login Page](public/images/github%20Photos/Login%20Page.png)
+
 13. new need to show flash messages using connect-flash package
     -> import connect-flash package
     
@@ -190,7 +198,9 @@ Now search "how many models are requiered for Pinterest Clone"
 
             - this is use to display error inside login form
 
-14. Make Dynamic profile name and username
+14. Make profile page with Dynamic name and username feature
+
+    ![Profile Page](public/images/github%20Photos/User%20Profile%20Page.png)
 
     -> we want to pass user details from userModel to .ejs file in "/profile" API
 
@@ -269,6 +279,8 @@ Now search "how many models are requiered for Pinterest Clone"
 
 
 16. Now display that posts to /profile route
+
+    ![Posts in Profile Page](public/images/github%20Photos/User%20Profile%20with%20Post%20Page.png)
 
 steps:
 1. populate posts from user in index.js file
@@ -375,6 +387,8 @@ steps:
 
 24. Want to add Dynamic posts of all users then,
 
+    ![Feed Page](public/images/github%20Photos/Feed%20Page.png)
+
     <% if (typeof posts !== 'undefined' && posts.length > 0) { %>
         <% posts.forEach(post => { %>
         <div class="box">
@@ -392,6 +406,8 @@ steps:
 
 
 25. create.ejs to create User posts
+
+    ![Create Post Page](public/images/github%20Photos/Create%20Post%20Page.png)
 
     1. Add link to Create Post into Nav.ejs file.
         
@@ -465,6 +481,10 @@ steps:
         <%= post.createdAt%>
 
 27. Now Create Payment Option => To do this we need to import and install "stripe" Api and import,
+
+    ![Subscription Based Plan Page](public/images/github%20Photos/Subscription%20Plan%20Page.png)
+
+    ![Payment Gateway Page](public/images/github%20Photos/Payment%20Gateway%20Page.png)
 
         const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY)
 
@@ -544,3 +564,9 @@ steps:
         })
 
     10. Now create success UI and cancel UI.
+
+    ![Success Page](public/images/github%20Photos/Success%20Page.png)
+
+    ![Failure Page](public/images/github%20Photos/Failure%20Page.png)
+
+
